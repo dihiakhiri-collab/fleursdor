@@ -1,0 +1,224 @@
+<!doctype html> <!-- Indique au navigateur que le document est en HTML5 -->
+<html lang="fr"> <!-- Langue principale du document -->
+<head>
+  <meta charset="utf-8" /> <!-- Encodage UTF-8 pour les caractères spéciaux -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Rendre la page adaptée aux écrans mobiles -->
+
+  <title>FleurD'Or</title> <!-- Titre affiché dans l’onglet du navigateur -->
+
+  <!-- Lien vers le fichier CSS de Bootstrap -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+  <!-- Styles personnalisés -->
+  <style>
+    /* Espace en haut pour que le contenu ne soit pas caché par la navbar */
+    body { padding-top: 70px; }
+
+    /* Taille des images dans les cartes */
+    .card-img-top { height:160px; object-fit:cover; }
+
+    /* Taille du carrousel */
+    .carousel-item { height: 420px; }
+    .carousel-item img { object-fit: cover; height: 100%; width:100%; }
+
+    /*  Couleur personnalisée pour le footer rose clair */
+    .alert-pink {
+      background-color: #f8c8dc; /* rose clair */
+      color: #000; /* texte noir */
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barre de navigation fixe en haut de la page -->
+ <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #f48fb1;">
+    <div class="container">
+      <!-- Nom de l’application avec un spinner jaune -->
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <!-- Spinner jaune (warning) comme demandé -->
+        <div class="spinner-border text-warning me-2" role="status" aria-hidden="true" 
+             style="width:1.4rem; height:1.4rem;"></div>
+        FleurD'Or
+      </a>
+
+      <!-- Bouton de menu pour les petits écrans -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+        <span class="navbar-toggler-icon"></span> <!-- Icône hamburger -->
+      </button>
+
+      <!-- Menu de navigation -->
+      <div class="collapse navbar-collapse" id="navMain">
+        <ul class="navbar-nav ms-auto"> <!-- ms-auto = aligne le menu à droite -->
+          <li class="nav-item"><a class="nav-link active" href="#">Accueil</a></li>
+
+          <!-- Menu déroulant Bouquets -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown1" role="button" data-bs-toggle="dropdown">
+              Bouquets
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Roses</a></li>
+              <li><a class="dropdown-item" href="#">Mélanges</a></li>
+              <li><a class="dropdown-item" href="#">Saisonnier</a></li>
+            </ul>
+          </li>
+
+          <!-- Menu déroulant Services -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown2" role="button" data-bs-toggle="dropdown">
+              Services
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Livraison</a></li>
+              <li><a class="dropdown-item" href="#">Abonnements</a></li>
+            </ul>
+          </li>
+
+          <!-- Lien simple vers Contact -->
+          <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- Diaporama d’images automatiques -->
+  <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <!-- Première image (active au démarrage) -->
+      <div class="carousel-item active">
+        <img src="images/image1.jpg" class="d-block w-100" alt="Bouquet roses">
+        <div class="carousel-caption d-none d-md-block">
+          <h2>Roses du matin</h2>
+          <p>Un bouquet rouge élégant livré à votre porte.</p>
+        </div>
+      </div>
+
+      <!-- Deuxième image -->
+      <div class="carousel-item">
+        <img src="images/image2.jpg" class="d-block w-100" alt="Bouquet mixte">
+        <div class="carousel-caption d-none d-md-block">
+          <h2>Mélange printanier</h2>
+          <p>Couleurs fraîches et parfum délicat.</p>
+        </div>
+      </div>
+
+      <!-- Troisième image -->
+      <div class="carousel-item">
+        <img src="images/image34.jpg" class="d-block w-100" alt="Bouquet livraison">
+        <div class="carousel-caption d-none d-md-block">
+          <h2>Livraison rapide</h2>
+          <p>Commandez maintenant, livrés à l'adresse souhaitée.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flèches pour changer d’image -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+
+
+  <main class="container my-5">
+    <!-- my-5 = marges haut et bas -->
+    
+    <!-- Section de 4 cartes de fleurs -->
+    <div class="row g-2 g-md-4 g-lg-5 "> <!-- g-2 = espace entre les colonnes pour mobile -->
+      
+      <!-- Carte 1 -->
+      <div class="col-12 col-md-6 col-lg-3"> <!--col-sm-12/col-md-6/col-lg-4/col-xxl-1 -->
+        <div class="card h-100">
+          <img src="images/image4.jpg" class="card-img-top" alt="">
+          <div class="card-header">Bouquet Classique</div>
+          <div class="card-body">
+            <h5 class="card-title">Roses & Lys</h5>
+            <p class="card-text">10 tiges — parfait pour anniversaires.</p>
+          </div>
+          <div class="card-footer">
+            <a href="#" class="btn btn-sm btn-primary">Commander</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carte 2 -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card h-100">
+          <img src="images/image5.jpg" class="card-img-top" alt="">
+          <div class="card-header">Économique</div>
+          <div class="card-body">
+            <h5 class="card-title">Petit assortiment</h5>
+            <p class="card-text">Prix doux, livraison incluse.</p>
+          </div>
+          <div class="card-footer">À partir de 20 €</div>
+        </div>
+      </div>
+
+      <!-- Carte 3 -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card h-100">
+          <img src="images/image61.jpg" class="card-img-top" alt="">
+          <div class="card-header">Premium</div>
+          <div class="card-body">
+            <h5 class="card-title">Collection Luxe</h5>
+            <p class="card-text">Fleurs rares et soignées.</p>
+          </div>
+          <div class="card-footer">Sur devis</div>
+        </div>
+      </div>
+
+      <!-- Carte 4 -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="card h-100">
+          <img src="images/image7.jpg" class="card-img-top" alt="">
+          <div class="card-header">Abonnement</div>
+          <div class="card-body">
+            <h5 class="card-title">Hebdomadaire</h5>
+            <p class="card-text">Un bouquet chaque semaine.</p>
+          </div>
+          <div class="card-footer">
+            <a href="#" class="btn btn-sm btn-outline-primary">S'abonner</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+<div class="row my-5">
+  <div class="col-12">
+    <!-- Section de bienvenue -->
+    <div class="p-5 mb-4 bg-light rounded-3 shadow-sm">
+      <div class="container-fluid py-4">
+        <h1 class="display-5 fw-bold text-success">Bienvenue chez FleurD'Or</h1>
+        <p class="col-md-8 fs-5 text-secondary">
+          FleurD'Or vous propose des bouquets frais et raffinés, conçus pour chaque occasion. 
+          Offrez un moment de bonheur avec nos créations florales uniques, réalisées avec soin et passion.
+        </p>
+        <a href="#boutique" class="btn btn-success btn-lg mt-3">
+           Découvrir nos bouquets
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Pied de page de couleur rose clair -->
+  <footer class="alert alert-pink mb-0">
+    <div class="container d-flex justify-content-between align-items-center">
+      <div>
+        <strong>FleurD'Or</strong> — Lorem ipsum dolor sit amet. &nbsp;
+        <a href="#" class="text-decoration-underline text-dark">Droits des utilisateurs</a>
+      </div>
+      <div>&copy; 2025 FleurD'Or — Tous droits réservés</div>
+    </div>
+  </footer>
+
+  <!-- Script JS de Bootstrap -->
+  <script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+✅ 1. Ouvrir la console Node
+
+Dans ton backend :
+
+node
+
+✅ 2. Charger les modèles Sequelize
+const db = require("./models");
+
+✅ 3. Tester la connexion à la base
+await db.sequelize.authenticate()
+
+
+Si ça affiche undefined → ✔ c’est bon.
+
+✅ 4. Voir toutes les fleurs
+await db.Flower.findAll()
+
+✅ 5. Voir tous les bouquets
+await db.Bouquet.findAll()
+
+✅ 6. Voir tous les utilisateurs
+await db.User.findAll()
+
+✅ 7. Voir les fleurs dans un bouquet (relation N-N)
+await db.Bouquet.findByPk(1, { include: db.Flower })
+
+⭐ 8. Afficher proprement (format JSON)
+
+(souvent plus lisible)
+
+console.log(JSON.stringify(await db.Bouquet.findByPk(1, { include: db.Flower }), null, 2));
+
+⚠️ Si await ne fonctionne pas dans ton Node REPL
+
+Alors utilise .then() :
+
+db.Flower.findAll().then(console.log)
+db.Bouquet.findAll().then(console.log)
+
+🎯 Résumé ultra-court à retenir :
+node
+const db = require("./models")
+await db.Flower.findAll()
+await db.Bouquet.findAll()
+await db.Bouquet.findByPk(1, { include: db.Flower })
+
+
+données de session :garder les données intermédiare 

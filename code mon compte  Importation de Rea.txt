@@ -1,0 +1,147 @@
+code mon compte :// Importation de React et du hook useState pour gérer les états (email, mot de passe)
+import React, { useState } from "react";
+
+// Importation des icônes de React Icons
+// FaEnvelope → icône d’enveloppe (email)
+// FaLock → icône de cadenas (mot de passe)
+// FaUserCircle → icône de profil utilisateur
+import { FaEnvelope, FaLock, FaUserCircle } from "react-icons/fa";
+
+// Définition du composant fonctionnel principal
+export default function MonCompte() {
+  // États locaux pour stocker les valeurs du formulaire
+  const [email, setEmail] = useState(""); // Pour le champ email
+  const [motDePasse, setMotDePasse] = useState(""); // Pour le champ mot de passe
+
+  // 🪄 Fonction déclenchée lors de la soumission du formulaire
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Empêche le rechargement automatique de la page
+    alert(`Bienvenue dans votre espace, ${email || "cher client"} 🌸`);
+    // Affiche une alerte avec un message de bienvenue et l’adresse email entrée
+  };
+
+  // Contenu du composant affiché à l’écran
+  return (
+    // Section principale centrée verticalement et horizontalement
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{
+        minHeight: "100vh", // Prend toute la hauteur de la fenêtre
+        background:
+          "linear-gradient(135deg, #ffdde1, #ee9ca7, #c1dfc4, #deecdd)", // Dégradé de fond pastel
+        backgroundSize: "300% 300%", // Donne un effet fluide au dégradé
+        animation: "gradientMove 8s ease infinite", // Animation douce du dégradé
+      }}
+    >
+      {/* Bloc central contenant le formulaire */}
+      <div
+        className="p-5 shadow-lg rounded-5"
+        style={{
+          width: "90%", // Largeur responsive
+          maxWidth: "420px", // Limite sur grand écran
+          backdropFilter: "blur(12px)", // Effet de flou derrière (verre dépoli)
+          background: "rgba(255, 255, 255, 0.7)", // Fond semi-transparent
+          border: "1px solid rgba(255, 255, 255, 0.3)", // Bordure subtile
+          boxShadow: "0 8px 25px rgba(0, 0, 0, 0.1)", // Ombre élégante
+          animation: "fadeIn 1s ease", // Animation d’apparition
+        }}
+      >
+        {/* En-tête du formulaire */}
+        <div className="text-center mb-4">
+          {/* Icône de profil utilisateur */}
+          <FaUserCircle
+            size={70}
+            color="#71c48e" // Vert doux
+            className="mb-3"
+            style={{
+              filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))", // Petit effet d’ombre
+            }}
+          />
+          {/* Titre principal */}
+          <h2 className="fw-bold" style={{ color: "#198754" }}>
+            Espace Mon Compte
+          </h2>
+          {/* Sous-titre */}
+          <p className="text-muted">Connectez-vous à votre univers floral</p>
+        </div>
+
+        {/* Formulaire de connexion */}
+        <form onSubmit={handleSubmit}>
+          {/* Champ email avec icône à gauche */}
+          <div className="input-group mb-3">
+            {/* Icône d’email */}
+            <span
+              className="input-group-text border-0"
+              style={{ backgroundColor: "#eafaf1" }}
+            >
+              <FaEnvelope color="#63b380" />
+            </span>
+
+            {/* Champ texte pour l’adresse email */}
+            <input
+              type="email"
+              className="form-control border-0 shadow-sm"
+              placeholder="Adresse email"
+              value={email} // Lie la valeur à l’état "email"
+              onChange={(e) => setEmail(e.target.value)} // Met à jour l’état quand on écrit
+              required // Champ obligatoire
+            />
+          </div>
+
+          {/* Champ mot de passe avec icône */}
+          <div className="input-group mb-4">
+            {/* Icône de cadenas */}
+            <span
+              className="input-group-text border-0"
+              style={{ backgroundColor: "#eafaf1" }}
+            >
+              <FaLock color="#63b380" />
+            </span>
+
+            {/* Champ mot de passe */}
+            <input
+              type="password"
+              className="form-control border-0 shadow-sm"
+              placeholder="Mot de passe"
+              value={motDePasse} // Lie la valeur à l’état "motDePasse"
+              onChange={(e) => setMotDePasse(e.target.value)} // Met à jour l’état
+              required
+            />
+          </div>
+
+          {/* Bouton de connexion */}
+          <button
+            type="submit"
+            className="btn w-100 fw-bold py-2"
+            style={{
+              background: "linear-gradient(90deg, #71c48e 0%, #e26ea2 100%)", // Dégradé vert-rose
+              border: "none",
+              borderRadius: "25px",
+              color: "white",
+              fontSize: "1.1rem",
+              transition: "0.3s ease", // Animation au survol
+            }}
+            onMouseOver={(e) =>
+              (e.currentTarget.style.filter = "brightness(1.1)") // Éclaircit au survol
+            }
+            onMouseOut={(e) =>
+              (e.currentTarget.style.filter = "brightness(1)") // Retour normal
+            }
+          >
+            Se connecter
+          </button>
+        </form>
+
+        {/* Lien vers la création de compte */}
+        <div className="text-center mt-4">
+          <small>
+            Nouveau chez <b>Fleurs d’Or</b> ?{" "}
+            <a href="/moncompte" style={{ color: "#e26ea2", textDecoration: "none" }}>
+              Créer un compte
+            </a>
+          </small>
+        </div>
+      </div>
+    </div>
+  );
+}

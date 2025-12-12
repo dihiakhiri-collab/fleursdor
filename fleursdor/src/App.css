@@ -1,0 +1,142 @@
+/* 🌼 Style général du site – Thème Lavande Royale */
+body {
+  background: linear-gradient(180deg, #f9f6ff 0%, #e3d7ff 50%, #fef7ff 100%);
+  font-family: "Poppins", sans-serif;
+  color: #2c2a4a;
+  margin: 0;
+  padding: 0;
+}
+
+/* 🌸 Titres */
+h1, h2, h3 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  color: #6c63ff; /* Lavande intense */
+  letter-spacing: 1px;
+}
+
+/* 🌺 Barre de navigation */
+.navbar {
+  background: linear-gradient(90deg, #4c3aff, #b37cff);
+  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  color: #fff8dc !important; /* Or pâle */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.nav-link {
+  font-weight: 500;
+  color: #f3ecff !important;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ffe177 !important;
+  transform: scale(1.1);
+}
+
+/* 💐 Boutons */
+.btn {
+  border-radius: 25px;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-success {
+  background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+  border: none;
+  color: #fff;
+  box-shadow: 0 3px 6px rgba(139, 92, 246, 0.3);
+}
+
+.btn-success:hover {
+  background: linear-gradient(90deg, #a78bfa, #c084fc);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 5px 12px rgba(108, 99, 255, 0.5);
+}
+
+/* 🌷 Cartes de bouquets et fleurs */
+.card {
+  border-radius: 18px;
+  overflow: hidden;
+  border: none;
+  background-color: #ffffff;
+  box-shadow: 0 6px 16px rgba(70, 52, 138, 0.15);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(108, 99, 255, 0.25);
+}
+
+.card-title {
+  color: #4c3aff;
+  font-weight: 600;
+}
+
+/* 🌻 Pied de page */
+.footer-custom {
+  background: linear-gradient(90deg, #4c3aff, #a78bfa);
+  color: #fff8dc;
+  border-top: 3px solid #ffe177;
+  font-size: 15px;
+  text-align: center;
+  padding: 20px 0;
+  letter-spacing: 0.5px;
+}
+
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* 🌸 Styles personnalisés de typographie */
+
+/* Nom de marque Fleurs D’Or */
+.navbar-brand {
+  font-family: "Great Vibes", cursive;
+  font-size: 2rem !important;
+  font-weight: 700;
+  color: #fff !important;
+  letter-spacing: 1px;
+}
+
+/* Titre de bienvenue */
+h1.text-success {
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  color: #198754;
+  letter-spacing: 0.5px;
+}
+
+/* Texte de description */
+p.fs-5 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.2rem;
+  color: #333;
+  letter-spacing: 0.3px;
+}

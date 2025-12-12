@@ -1,0 +1,16 @@
+Élément	Rôle
+useState([...])	Crée l’état global du menu (tableau d’objets)
+{menu.map(...)}	Boucle pour générer les liens dynamiquement
+<Link to="/fleurs">	Crée un lien interne sans rechargement (React Router)
+navbar Bootstrap	Met en forme la barre de navigation
+handlrch	Affiche une alerte lors d’une recherche (optionnel)
+La commande npm run build sert à préparer ton application React pour la mettre en ligne (déploiement).
+Le routeur front-end permet de naviguer entre tes différentes pages sans recharger le site.
+
+Étape	Fichier	Rôle
+1	Bouquet.js	Affiche un seul bouquet sous forme de carte
+2	Bouquets.js	Affiche plusieurs bouquets dans une grille
+3	App.js	Configure le routeur front-end et relie toutes les pages
+4	NavBar.js	Barre de navigation avec les liens Link vers chaque page
+
+serve -s build  -->Lance ton site optimisé -->Visible sur localhost:3000
