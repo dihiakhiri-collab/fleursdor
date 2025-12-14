@@ -7,6 +7,7 @@
 
 //support 2 modes soit avec fetch ou avec axios (si useAxios: true)
 import axios from "axios";
+import store from "../store/store"; 
 
 const config = {
   useAxios: false, 
@@ -15,6 +16,25 @@ const config = {
 
 export default async function myFetch(path, options = {}) {
   const url = (config.baseURL || "") + path;
+  //Question 3 EXO3
+  //Le but est de centraliser l’ajout du JWT dans les fonctions réseau.
+//La fonction myFetch lit le token depuis Redux et ajoute l’en-tête Authorization uniquement si le token est présent.
+//Cela permet au backend de savoir si l’utilisateur est authentifié sans dupliquer le code dans chaque requête.
+
+    // 1) Récupérer le token depuis Redux
+  const token = store.getState().auth?.token;
+
+  // 2) Préparer les headers
+  const headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {}),
+  };
+
+  // 3) Ajouter Authorization UNIQUEMENT si token existe
+  if (token) {
+    headers.Authorization = "Bearer " + token;
+  }
+
 
   if (config.useAxios) {
     // axios path

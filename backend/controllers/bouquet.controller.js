@@ -2,16 +2,50 @@ const db = require("../models");
 const Bouquet = db.Bouquet;
 const Flower = db.Flower;
 
+//changement avec question 2-a) EXO3 
 exports.findAll = async (req, res) => {
-  const data = await Bouquet.findAll({ include: Flower });
-  res.json(data);
+  const bouquets = await Bouquet.findAll({ include: Flower });
+
+  // ❌ utilisateur NON authentifié
+  if (!req.user) {
+    return res.json(
+      bouquets.map(b => ({
+        id: b.id,
+        nom: b.nom,
+        descr: b.descr,
+        image: b.image,
+        prix: b.prix,   
+        likesCount: b.likesCount, 
+        Flowers: b.Flowers
+       
+      
+      }))
+    );
+  }
+
+  // ✅ utilisateur authentifié
+  res.json(bouquets);
 };
+
 
 exports.findOne = async (req, res) => {
   const b = await Bouquet.findByPk(req.params.id, { include: Flower });
   if (!b) return res.status(404).json({ message: "Bouquet introuvable" });
+
+  if (!req.user) {
+    return res.json({
+      id: b.id,
+      nom: b.nom,
+      descr: b.descr,
+      image: b.image,
+      prix: b.prix,   
+      Flowers: b.Flowers
+    });
+  }
+
   res.json(b);
 };
+
 
 exports.create = async (req, res) => {
   try {
@@ -86,20 +120,57 @@ exports.delete = async (req, res) => {
 };
 
 exports.like = async (req, res) => {
-  const b = await Bouquet.findByPk(req.params.id);
-  if (!b) return res.status(404).json({ ok: false });
+  if (!req.user) {
+    return res.status(401).json({ error: "Non authentifié" });
+  }
 
-  b.likesCount += 1;
-  await b.save();
+  const bouquet = await Bouquet.findByPk(req.params.id);
+  if (!bouquet) {
+    return res.status(404).json({ error: "Bouquet introuvable" });
+  }
 
-  res.json({ likes: b.likesCount });
+  // Vérifier si l'utilisateur a déjà liké
+  const alreadyLiked = await bouquet.hasLikedBy(req.user.id);
+
+  if (alreadyLiked) {
+    // UNLIKE
+    await bouquet.removeLikedBy(req.user.id);
+  } else {
+    // LIKE
+    await bouquet.addLikedBy(req.user.id);
+  }
+
+  // Recalculer le vrai compteur
+  const likesCount = await bouquet.countLikedBy();
+
+  res.json({
+    liked: !alreadyLiked,
+    likesCount
+  });
 };
+
+
+
 
 exports.likesCount = async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: "Non authentifié" });
+  }
+
   const b = await Bouquet.findByPk(req.params.id);
   res.json({ likes: b.likesCount });
 };
 
+
 exports.usersLiked = async (req, res) => {
-  res.json(["user1", "user2"]);
+  const bouquet = await Bouquet.findByPk(req.params.id, {
+    include: {
+      model: db.User,
+      as: "likedBy",
+      attributes: ["id", "login", "fullName"],
+      through: { attributes: [] }
+    }
+  });
+
+  res.json(bouquet.likedBy);
 };

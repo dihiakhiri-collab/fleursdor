@@ -104,17 +104,10 @@ export default function Bouquets() {
   const bouquet = bouquets.find(b => b.id === id);
   if (!bouquet) return;
 
-  // Mise à jour optimiste
-  dispatch(toggleLocalLiked(id));
+  const handleToggleLike = (id) => {
+  dispatch(sendLike(id));
+};
 
-  // Déterminer l'action like ou unlike
-  const action = bouquet.liked ? "unlike" : "like";
-
-  // Envoyer au backend
-  dispatch(sendLike({ id, action })).then(() => {
-    const state = storeGetSnapshot();
-    localStorage.setItem("mesBouquets", JSON.stringify(state.bouquets.items));
-  });
 };
 
 

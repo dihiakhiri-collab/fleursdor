@@ -5,10 +5,10 @@ import { FaPlusCircle, FaLeaf } from "react-icons/fa";
 export default function AdminHome() {
 
   //sécurité : si pas admin → retour accueil
-  if (sessionStorage.getItem("role") !== "admin") {
-    window.location.href = "/";
-    return null; // pour éviter une erreur React
-  }
+ // if (sessionStorage.getItem("role") !== "admin") {
+   // window.location.href = "/";
+   // return null; // pour éviter une erreur React
+ // }
 
   return (
     <div style={{

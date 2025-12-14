@@ -90,12 +90,24 @@ export default function Bouquet({ bouquet, onToggleLike }) {
 
            { /*Afiicher les utilisateurs qui ont fait des clics*/}
 
-            <span 
-              style={{ cursor:"pointer", marginLeft:"10px" }}
-              onClick={() => console.log("Users:", bouquet.usersWhoLiked)}
-            >   
-               Voir Utilisateurs
-            </span>
+            <span
+              style={{ cursor: "pointer", marginLeft: "10px" }}
+              onClick={async () => {
+                const res = await fetch(
+                 `http://localhost:5000/api/bouquets/${bouquet.id}/users`,
+                 {
+                   headers: {
+                     Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                   },
+                 }
+               );
+               const users = await res.json();
+               alert(users.join(", "));
+             }}
+           >
+              Voir Utilisateurs
+           </span>
+
 
 
             {/* Bouton Commander */}
@@ -106,9 +118,40 @@ export default function Bouquet({ bouquet, onToggleLike }) {
                 borderRadius: "25px",
                 background: "linear-gradient(135deg, #8B5CF6, #6366F1)",
               }}
-              onClick={() =>
-                alert(`Commande du ${bouquet.nom} passée avec succès !`)
-              }
+              onClick={async () => {
+                 // 1️) Pas connecté
+                if (!isAuthenticated()) {
+                  alert("Veuillez vous connecter");
+                  return;
+                }
+                  // 2️) Admin bloqué
+                if (whoIsAuthenticated()?.role === "admin") {
+                  alert("Admin ne peut pas commander");
+                  return;
+                }
+                // 3️⃣ Appel backend
+                try {
+                    const res = await fetch(`http://localhost:5000/api/cart/${bouquet.id}`, 
+                     {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                           Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+                        },
+                      }
+                   );
+                  
+                 if (!res.ok) {
+                    throw new Error("Erreur lors de l'ajout au panier");
+                  }
+
+                  alert("Ajouté au panier ");
+                } catch (err) {
+                  alert("Erreur serveur ");
+                  console.error(err);
+               }
+             }}
+
             >
               Commander
             </button>

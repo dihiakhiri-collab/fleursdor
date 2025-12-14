@@ -16,14 +16,16 @@ export const loadBouquets = createAsyncThunk("bouquets/load", async () => {
 });
 
 // Thunk pour like (optimistic update + reconcile)et Met à jour le compteur de likes après confirmation du serveur.
-export const sendLike = createAsyncThunk("bouquets/sendLike", async ({ id, action }, { rejectWithValue }) => {
-  try {
-    const res = await api.likeBouquet(id, action);
-    return { id, likesCount: res.likesCount };
-  } catch (err) {
-    return rejectWithValue(err);
+export const sendLike = createAsyncThunk(
+  "bouquets/sendLike",
+  async (id) => {
+    const res = await api.likeBouquet(id);
+    return { id, ...res };
   }
-});
+);
+
+
+
 
 const bouquetsSlice = createSlice({
   name: "bouquets",
@@ -35,10 +37,7 @@ const bouquetsSlice = createSlice({
       const id = action.payload;
       const b = state.items.find((x) => x.id === id);
       if (b) {
-        b.liked = !b.liked;
-        b.likesCount = b.likesCount || 0;
-        b.likesCount += b.liked ? 1 : -1;
-        if (b.likesCount < 0) b.likesCount = 0;
+       b.liked = true;
       }
     },
     setBouquets(state, action) {
@@ -54,12 +53,15 @@ const bouquetsSlice = createSlice({
         s.items = a.payload.map((b) => ({ ...b, liked: false, likesCount: b.likesCount || 0 }));
         s.status = "idle";
       })
-      .addCase(sendLike.fulfilled, (s, a) => {
-        // reconcile server likesCount with local item
-        const id = a.payload.id;
-        const b = s.items.find((x) => x.id === id);
-        if (b) b.likesCount = a.payload.likesCount;
-      });
+     .addCase(sendLike.fulfilled, (state, action) => {
+       const { id, liked, likesCount } = action.payload;
+       const b = state.items.find(x => x.id === id);
+       if (b) {
+          b.likesCount = likesCount;
+          b.liked = liked;
+       }
+     });
+
   },
 });
 

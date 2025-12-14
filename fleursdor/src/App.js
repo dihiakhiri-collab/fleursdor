@@ -16,17 +16,20 @@ import AdminBouquetAdd from "./pages/AdminBouquetAdd";
 import AdminBouquetValidate from "./pages/AdminBouquetValidate";
 import "./App.css"; //mon fichier de style personnalisé (couleurs, marges, design)
 import { isAuthenticated, whoIsAuthenticated } from "./pages/Authentification/Authentifier";
+import AdminRoute from "./components/AdminRoute";
+
 
 
 //composant principal de App
 
 //l‘état global -->un tableau d’objets menu contenant les liens qui apparaîtront dans la barre de navigation (NavBar).
 function App() {
+  const isAuth = isAuthenticated();
   const menu = [
     { url: "/home", label: "Accueil" },
     { url: "/bouquets", label: "Bouquets" },
     { url: "/fleurs", label: "Fleurs" },
-    { url: "/moncompte", label: whoIsAuthenticated() },
+    { url: "/moncompte",  label: isAuth ? whoIsAuthenticated() : "Mon compte" },
   ];
 
 
@@ -63,9 +66,33 @@ return (
         />  {/* Affiche la page des bouquets, en lui passant des props. */} {/*  affiche la page Bouquets  ,on lui transmet deux props : bouquets → la liste à afficher, trierBouquets → la fonction pour trier*/}
         <Route path="/fleurs" element={<Fleurs />} />
         <Route path="/moncompte" element={<MonCompte />} />
-        <Route path="/admin/home" element={<AdminHome />} />
-        <Route path="/admin/addBouquet" element={<AdminBouquetAdd />} />
-        <Route path="/admin/validateBouquet" element={<AdminBouquetValidate />} />
+       <Route
+  path="/admin/home"
+  element={
+    <AdminRoute>
+      <AdminHome />
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path="/admin/addBouquet"
+  element={
+    <AdminRoute>
+      <AdminBouquetAdd />
+    </AdminRoute>
+  }
+/>
+
+<Route
+  path="/admin/validateBouquet"
+  element={
+    <AdminRoute>
+      <AdminBouquetValidate />
+    </AdminRoute>
+  }
+/>
+
       </Routes>
     </div>
 

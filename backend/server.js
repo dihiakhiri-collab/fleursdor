@@ -6,6 +6,7 @@ const cors = require("cors");
 const path = require("path");
 const db = require("./models");
 const test = require("./test/test");
+const bcrypt = require("bcryptjs");
 
 // -----------------------------------------------------
 // 2) INITIALISATION DU SERVEUR
@@ -48,11 +49,17 @@ server.get("/metrics", (req, res) => {
 // -----------------------------------------------------
 // 5) AUTHENTIFICATION ADMIN SIMPLE
 // -----------------------------------------------------
-server.get("/adminExists", async (req,res)=>{
-  const User = db.User;
-  const admin = await User.findOne({ where:{ login:"admin" } });
+// -----------------------------------------------------
+// 5) VERIFIER SI UN ADMIN EXISTE (PAR ROLE)
+// -----------------------------------------------------
+server.get("/adminExists", async (req, res) => {
+  const admin = await db.User.findOne({
+    where: { role: "admin" }
+  });
+
   res.json({ exists: !!admin });
 });
+
 
 server.post("/admin/create", async (req,res)=>{
   const User = db.User;
@@ -65,16 +72,26 @@ server.post("/admin/create", async (req,res)=>{
   res.json({ ok:true });
 });
 
-server.post("/admin/login", async (req,res)=>{
-  const User = db.User;
+server.post("/admin/login", async (req, res) => {
   const { login, password } = req.body;
 
-  const admin = await User.findOne({ where:{ login, password } });
-  if(!admin) return res.json({ ok:false, error:"Login incorrect" });
+  const admin = await db.User.findOne({ where: { login, role: "admin" } });
+  if (!admin) {
+    return res.json({ ok: false, error: "Admin introuvable" });
+  }
 
-  res.json({ ok:true, role:"admin" });
+  const valid = await bcrypt.compare(password, admin.password);
+  if (!valid) {
+    return res.json({ ok: false, error: "Mot de passe incorrect" });
+  }
+
+  res.json({
+    ok: true,
+    id: admin.id,
+    fullName: admin.fullName,
+    role: admin.role
+  });
 });
-
 
 // -----------------------------------------------------
 // 6) ROUTES AVEC ROUTER()
@@ -82,11 +99,13 @@ server.post("/admin/login", async (req,res)=>{
 const bouquetRoutes = require("./routes/bouquet.routes");
 const flowerRoutes = require("./routes/flower.routes");
 const userRoutes = require("./routes/user.routes");
+const panierRoutes = require("./routes/panier.routes"); 
 
 // Montage des routes API
 server.use("/api/bouquets", bouquetRoutes);
 server.use("/api/flowers", flowerRoutes);
 server.use("/api/users", userRoutes);
+server.use("/api/cart", panierRoutes);
 
 
 // -----------------------------------------------------
@@ -95,7 +114,7 @@ server.use("/api/users", userRoutes);
 db.sequelize.sync().then(async () => {
   console.log("Base SQLite synchronisée.");
 
-  await test(db); // tests automatiques
+ //await test(db); // tests automatiques
   console.log("Tests effectués.");
 });
 

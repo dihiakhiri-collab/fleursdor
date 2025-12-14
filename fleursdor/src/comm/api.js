@@ -3,6 +3,13 @@
 import myFetch from "./myFetch";
 
 export const fetchBouquets = () => myFetch("/api/bouquets");//Récupère la liste des bouquets :GET /api/bouquets
-export const likeBouquet = (id, action = "like") =>
-  myFetch("/like", { method: "POST", body: { id, action } }); //Ajoute ou retire un like :POST /like
+export const likeBouquet = (id) =>
+  myFetch(`/api/bouquets/${id}/like`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    },
+  });
+
+ //Ajoute ou retire un like :POST /like
 export const getMetrics = () => myFetch("/metrics"); //Récupère les statistiques serveur (requêtes/minute)

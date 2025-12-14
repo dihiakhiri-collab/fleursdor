@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../store/authSlice";
+
 
 export default function MonCompte() {
   const navigate = useNavigate();
+  const dispatch = useDispatch(); 
   const [mode, setMode] = useState("login"); // login | create
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -15,36 +19,52 @@ export default function MonCompte() {
       });
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const route = mode === "create" ? "/admin/create" : "/admin/login";
+  const url =
+    mode === "login"
+      ? "http://localhost:5000/api/users/login"
+      : "http://localhost:5000/api/users"; // CREATE USER
 
-    const res = await fetch("http://localhost:5000" + route, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ login, password })
-    });
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ login, password })
+  });
 
-    const data = await res.json();
-    if (!data.ok) return alert(data.error);
+  const data = await res.json();
 
-     sessionStorage.setItem("role", data.role);
-        if(data.role === "admin"){
-      navigate("/admin/home");
-    } else {
-      navigate("/");
-    }
-  
-  };
+  if (!data.ok) return alert(data.error);
+
+  if (mode === "login") {
+    dispatch(loginSuccess({
+      token: data.token,
+      fullName: data.fullName,
+      role: data.role
+    }));
+
+    sessionStorage.setItem("role", data.role);
+    sessionStorage.setItem("token", data.token);
+
+    if (data.role === "admin") navigate("/admin/home");
+    else navigate("/"); // user normal
+  } else {
+    alert("Compte créé avec succès. Connectez-vous.");
+    setMode("login");
+  }
+};
+
+
 
   return (
     <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
       <div className="card shadow p-4" style={{ width: "350px" }}>
         
-        <h3 className="text-center mb-3">
-          {mode === "create" ? "Créer Administrateur" : "Connexion"}
-        </h3>
+       <h3 className="text-center mb-3">
+        {mode === "login" ? "Connexion" : "Créer un compte"}
+       </h3>
+
 
         <form onSubmit={handleSubmit}>
           
@@ -71,9 +91,28 @@ export default function MonCompte() {
             />
           </div>
 
-          <button className="btn btn-success w-100">
-            {mode === "create" ? "Créer Admin" : "Se connecter"}
+          <button type="submit" className="btn btn-success w-100">
+             Se connecter
           </button>
+
+          <p className="text-center mt-3">
+           {mode === "login" ? (
+            <span
+             style={{ cursor: "pointer", color: "green" }}
+             onClick={() => setMode("register")}
+           >
+             Créer un compte
+            </span>
+          ) : (
+            <span
+             style={{ cursor: "pointer", color: "green" }}
+             onClick={() => setMode("login")}
+            >
+             Se connecter
+            </span>
+           )}
+         </p>
+
 
         </form>
       </div>

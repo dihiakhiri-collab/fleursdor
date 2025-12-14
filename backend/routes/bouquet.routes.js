@@ -1,19 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/bouquet.controller");
-const upload = require("../middleware/upload"); // multer
+const upload = require("../middleware/upload");
+const auth = require("../middleware/auth");
+const isAdmin = require("../middleware/isAdmin");
 
-router.get("/", controller.findAll);
-router.get("/:id", controller.findOne);
+//  Tous les utilisateurs connectés
+router.get("/", auth, controller.findAll);
+router.get("/:id", auth, controller.findOne);
 
-router.post("/", upload.single("image"), controller.create);
-router.put("/:id", upload.single("image"), controller.update);
+//  ADMIN SEULEMENT
+router.post("/", auth, isAdmin, upload.single("image"), controller.create);
+router.put("/:id", auth, isAdmin, upload.single("image"), controller.update);
+router.delete("/:id", auth, isAdmin, controller.delete);
 
-router.delete("/:id", controller.delete);
-
-// likes
-router.post("/:id/like", controller.like);
-router.get("/:id/likes", controller.likesCount);
-router.get("/:id/users", controller.usersLiked);
+//  Likes → utilisateurs connectés
+router.post("/:id/like", auth, controller.like);
+router.get("/:id/likes", auth, controller.likesCount);
+router.get("/:id/users", auth, controller.usersLiked);
 
 module.exports = router;
